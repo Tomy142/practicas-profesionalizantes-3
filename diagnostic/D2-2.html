@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    const Paper =[
+        {
+            Type: "Factura",
+            Letter: "A",
+            Status: "Original",
+            NroComp: "0001-00000075",
+            FechadeEmision: "23/02/2016",
+            Company:{
+                    RazonSocial: "Empresa S.A",
+                    CUIT: "20-287117013-1",
+                    Dir: "Belgrano 1010 Capital Federal",
+                    Tel: "11 25879645",
+                    IngBrutos: "30-22222222-9",
+            },
+            Customer:{
+                    Cliente: "SOL S.R.L.",
+                    RespIVA: "Responsable inscripto",
+                    Direccion: "San Martin 587 Capital Federal, Buenos Aires",
+                    CUIT: "30-11111111-8",
+                    Condiciondeventa: "Contado",
+            },
+            Sell:{
+                Products:[
+                    {
+                        Codigo: 5896,
+                        Descripcion: "LATEX INTERIOR BLANCO x20L",
+                        Cantidad: 2.00,
+                        UMedida: null,
+                        PrecioUnit: 515.36,
+                        Bonif: 0.00,
+                        AlicuotaIVA: 21.00,
+                        Total: 1247.17,
+                    },
+                    {
+                        Codigo: 5897,
+                        Descripcion: "PINCEL N°20",
+                        Cantidad: 5.00,
+                        UMedida: null,
+                        PrecioUnit: 82.36,
+                        Bonif: 0.00,
+                        AlicuotaIVA: 21.00,
+                        Total: 498.28,
+                    }
+                ],
+                Data:{
+                        ImporteNetoGravado: 1442.52,
+                        IVA21: 302.93,
+                },
+                Subtotal:  1745.45,
+                Total: 1745.45,
+                Text: "Son: un mil setecientos cuarenta y cinco con 45",
+            }
+        }
+    ];
+</script>
+</body>
+</html>
