@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    let Vikings ={
+        lives:["heart1", "heart2", "heart3"],
+        viking1:[
+            {
+                slots:[{
+                    slot1:["red-key", "selected"],
+                    slot2:["beet", "inactive"],
+                    slot3:["yellow-key", "inactive"],
+                    slot4:["shield", "inactive"],
+                }],
+                status: "inactive",
+            }
+        ],
+
+        viking2:[
+            {
+                slots:[{
+                    slot1:["empty", "selected"],
+                    slot2:["empty", "inactive"],
+                    slot3:["empty", "inactive"],
+                    slot4:["empty", "inactive"],
+                }],
+                status: "active",
+            }
+        ],
+
+        viking3:[
+            {
+                slots:[{
+                    slot1:["empty", "selected"],
+                    slot2:["empty", "inactive"],
+                    slot3:["empty", "inactive"],
+                    slot4:["empty", "inactive"],
+                }],
+                status: "inactive",
+            }
+        ],
+    }
+
+    let Actions={
+        move:[{}],
+        attack:[{}],
+        defense:[{}]
+    }
+
+    let Overworld={
+        biome:["cave"],
+        ground:[{}],
+        roof:[{}],
+        doors:[{door1:["lock", "locked"]}],
+    }
+
+    let Enemy={
+        type:"snail",
+        attack:"spit",
+    }
+</script>
+</body>
+</html>
