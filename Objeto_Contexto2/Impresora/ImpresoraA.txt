@@ -1,0 +1,17 @@
+Objeto:  ImpresoraA
+
+Propiedades/atributos:
+
+Nombre          |   Tipo de dato            | Cte/Variable          | Rango de variables posibles          | f(c) 
+turn_btn            bool                        variable                    true/false
+power_sensor        bool                        variable                    true/false
+
+
+Comportamiento:
+
+Nombre          |   Parametro/Tipo          |   Retorno/Tipo
+TurnOn_Red          red_light: bool                 true/false
+TurnOn_Yellow       yellow_light: bool              true/false
+TurnOn_Green        green_light: bool               true/false
+System_Power        power_sensor: bool              true/false
+Synchronize         
