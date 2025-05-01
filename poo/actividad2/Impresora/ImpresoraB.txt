@@ -1,0 +1,22 @@
+Objeto:  ImpresoraA
+
+Propiedades/atributos:
+
+Nombre          |   Tipo de dato            | Cte/Variable          | Rango de variables posibles          | f(c) 
+turn_btn            bool                        variable                    true/false
+power_sensor        bool                        variable                    true/false
+ink_capacity_ml     double                      constante                   1.2
+cartridge           bool                        variable                    true/false
+sheet               bool                        variable                    true/false
+%of_charge          double                      variable                    0 a 1.2 
+type_of_sheet       string                      variable                    A6/A5/A4/A3
+                            
+
+Comportamiento:
+
+Nombre          |   Parametro/Tipo          |   Retorno/Tipo
+    
+TurnOn
+TurnOff
+Print
+Change_cartridge

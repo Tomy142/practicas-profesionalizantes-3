@@ -5,13 +5,16 @@ Propiedades/atributos:
 Nombre          |   Tipo de dato            | Cte/Variable          | Rango de variables posibles          | f(c) 
 turn_btn            bool                        variable                    true/false
 power_sensor        bool                        variable                    true/false
-
+ink_capacity_ml     double                      constante                   1.2
+cartridge           bool                        variable                    true/false
+sheet               bool                        variable                    true/false
+%of_charge          double                      variable                    0 a 1.2                             
 
 Comportamiento:
 
 Nombre          |   Parametro/Tipo          |   Retorno/Tipo
-TurnOn_Red          red_light: bool                 true/false
-TurnOn_Yellow       yellow_light: bool              true/false
-TurnOn_Green        green_light: bool               true/false
-System_Power        power_sensor: bool              true/false
-Synchronize         
+    
+TurnOn
+TurnOff
+Print
+Change_cartridge

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Printer-Context-A</title>
+</head>
+<body>
+    
+</body>
+
+<script>
+    class PrinterA{
+        constructor(){
+            this._powersensor = true;
+            this._turn_btn = false;
+            this._cartridge;
+            this._sheet;
+            this._charge;
+            this._ink_capacity;
+        }
+
+        get powersensor(){
+            return this._powersensor;
+        }
+
+        set powersensor(value){
+            this._powersensor= value;
+        }
+    }
+</script>
+</html>
