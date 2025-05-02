@@ -27,6 +27,63 @@
         set powersensor(value){
             this._powersensor= value;
         }
+
+        get ink_capacity(){
+            return this._ink_capacity;
+        }
+
+        set ink_capacity(value){
+            this._ink_capacity = value;
+        }
+
+        get cartridge(){
+            return this._cartridge;
+        }
+
+        set cartridge(value){
+            this._cartridge = value;
+        }
+
+        get sheet(){
+            return this._sheet;
+        }
+
+        set sheet(value){
+            this._sheet = value;
+        }
+
+        get percent_of_charge(){
+            return this._charge;
+        }
+
+        set percent_of_charge(value){
+            this._charge = value;
+        }
+
+        TurnOn(){
+            if(_turn_btn == false){
+                _turn_btn = true;
+                console.log("Prendiendo...")
+            }
+        }
+
+        TurnOff(){
+            if(_turn_btn == true){
+                _turn_btn = false;
+                console.log("Apagando...")
+            }
+        }
+        Print(){
+            if(_turn_btn == true && powersensor == true && _sheet == true && _charge > 0){
+                console.log("Imprimiendo...")
+            }
+        }
+
+        Change_cartridge(){
+            if(_charge <= 0){
+                console.log("Por favor cambie el cartucho")
+            }
+        }
     }
 </script>
 </html>
