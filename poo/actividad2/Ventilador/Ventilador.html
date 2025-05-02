@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fan</title>
+</head>
+<body>
+    
+</body>
+<script>
+    class Fan{
+        constructor(){
+            power_whatts = 90;
+            blades_material = "Plastic";
+            blades = 3;
+            volts = 220;
+            shifts = 0;
+        }
+        GetSpeeds(){
+            return this.shifts;
+        }
+        SetSpeeds(value){
+            this.shifts = value;
+        }
+}
+</script>
+</html>

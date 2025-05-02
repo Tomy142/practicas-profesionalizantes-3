@@ -1,0 +1,20 @@
+Objeto:  ImpresoraA
+
+Propiedades/atributos:
+
+Nombre          |   Tipo de dato            | Cte/Variable          | Rango de variables posibles          | f(c) 
+power-whatts        int                         variable                0 to 90               
+blades_material     string                      const                   ---
+blades              int                         const                   1 a <
+volts               int                         const                   220
+shifts              int                         variable                0 a 3
+
+                            
+
+Comportamiento:
+
+Nombre          |   Parametro/Tipo          |   Retorno/Tipo
+
+SetSpeed()
+GetSpeed()
+
