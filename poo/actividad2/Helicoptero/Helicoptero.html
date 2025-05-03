@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helicopter</title>
+</head>
+<body>
+    
+</body>
+<script>
+    class Helicopter{
+        constructor(){
+            armor = 600;
+            fuel = 100;
+            load = 0;
+            lives = 3;
+            guns_ammo = 1178;
+            missiles_ammo = 8;
+            hydras_ammo = 38;
+            move_foward = "w";
+            direction = 0;
+            attack = null;
+        }
+
+        Attack(){
+            attack = window.prompt("");
+
+            do{
+                if(attack == "y" || attack == "b" || attack == "a"){
+                    console.log("Disparando...");
+                } 
+            }while(attack != null)
+            
+        }
+
+        Movement(){
+            move_foward = window.prompt("");
+            do{
+                if(move_foward == "w"){
+                    console.log("Moviendo adelante...");
+                }
+            }while(move_foward != null)
+        }
+
+        Direction(){
+            do{
+                direction++;                        
+            }while(MouseEvent != null)
+        }
+
+    }
+</script>
+</html>
+

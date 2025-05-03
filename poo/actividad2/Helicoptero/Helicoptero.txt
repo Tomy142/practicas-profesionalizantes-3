@@ -1,0 +1,29 @@
+Objeto:  Helicoptero
+
+Propiedades/atributos:
+
+Nombre          |   Tipo de dato            | Cte/Variable          | Rango de variables posibles          | f(c) 
+armor               int                        variable                 0 a 600
+fuel                int                        variable                 0 a 100
+load                int                        variable                 0 a <
+lives               int                        variable                 0 a 3
+guns_ammo           int                        variable                 0 a 1178
+missiles_ammo       int                        variable                 0 a 8
+hydras_ammo         int                        variable                 0 a 38
+move_foward         string                     constante                ---
+attack              string                     variable                 ---
+direction           double                     variable                0 a 360
+
+
+                            
+
+Comportamiento:
+
+Nombre          |   Parametro/Tipo          |   Retorno/Tipo
+
+Attack()
+Movement()
+Direction()
+
+
+
