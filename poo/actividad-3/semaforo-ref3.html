@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Semáforo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .traffic-light {
+            position: absolute;
+            background-color: rgb(24, 23, 23);
+            height: 100px;
+            width: 50px;
+            top: 310px;
+            left: 1755px;
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .light {
+            height: 30px;
+            width: 30px;
+            background-color: white;
+            border-radius: 50%;
+            border: 2px solid black;
+        }
+
+        .switch{
+            height: 100px;
+            width: 200px;
+            margin-left:1700px;
+        }
+
+        .on {
+            width: 100px;
+            height: 100px;
+        }
+
+        .off{
+            width: 100px;
+            height: 100px;
+        }
+
+        #myCanvas {
+            display: block;
+            margin-top: 500px;
+        }
+
+        .cross-walk {
+            position: absolute;
+            top: 600px;
+            left: 1540px;
+            width: 10px;
+            height: 317px;
+        }
+    </style>
+</head>
+<body>
+
+    <img id="background" class="background" src="fondo.png" alt="Fondo">
+    
+    <div id="traffic-light" class="traffic-light">
+        <div id="red-light" class="light"></div>
+        <div id="yellow-light" class="light"></div>
+        <div id="green-light" class="light"></div>
+    </div>
+
+    <div id="cross-walk" class="cross-walk"></div>
+    
+    <div id="switch" class="switch">
+        <button >
+            <img id="on" class="on" src="on.png" alt="on">
+        </button>
+        <button >
+            <img  id="off" class="off" src="off.png" alt="off">
+        </button>
+    </div>
+    
+
+    <canvas id="myCanvas" width="1918" height="300"></canvas>
+
+    <script>
+        let canvas = document.getElementById("myCanvas");
+        let ctx = canvas.getContext("2d");
+
+        // Calcular posición relativa del cruce al canvas
+        let crosswalk = document.getElementById("cross-walk").getBoundingClientRect().left;
+        let canvasOffset = canvas.getBoundingClientRect().left;
+        crosswalk -= canvasOffset;
+
+        let semaphore;
+
+        let x = 100;
+        let y = 30;
+        let radius = 100;
+        let speed = 6;
+        let isStopped = false;
+
+        let golfImg = new Image();
+        golfImg.src = "golf.png";
+
+        golfImg.onload = function () {};
+
+        function drawImage() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(golfImg, x, y, radius * 9, radius * 3);
+        }
+
+        function updateImage() {
+            let state = semaphore.getModelState();
+            let carFront = x + radius * 9;
+
+            
+            let stopLine = crosswalk;
+
+            
+            if (!isStopped && carFront + speed >= stopLine && (state.red || state.yellow)) {
+                
+                x = stopLine - radius * 9;
+                isStopped = true;
+            }
+            
+            if (isStopped && state.green) {
+                isStopped = false;
+            }
+
+            if (!isStopped) {
+                x += speed;
+                if (x + radius * 2 > canvas.width) {
+                    x = -radius * 2;
+                }
+            }
+            drawImage();
+        }
+
+
+        function animation() {
+            updateImage();
+            requestAnimationFrame(animation);
+        }
+
+        class SemaphoreView {
+            constructor(model) {
+                this._model = model;
+                this._model.addEventListener('changed', () => this.updateView());
+                this.updateView();
+            }
+
+            updateView() {
+                let state = this._model.getModelState();
+
+                document.getElementById('red-light').style.backgroundColor = state.red ? 'red' : 'white';
+                document.getElementById('yellow-light').style.backgroundColor = state.yellow ? 'yellow' : 'white';
+                document.getElementById('green-light').style.backgroundColor = state.green ? 'green' : 'white';
+            }
+        }
+
+        class SemaphoreModel extends EventTarget {
+            constructor() {
+                super();
+                this.timer = 0;
+                this.redTime = 4;
+                this.transitionTime = 1;
+                this.greenTime = 4;
+
+                this.redLightState = null;
+                this.yellowLightState = null;
+                this.greenLightState = null;
+
+                this.isRunning = false;
+                this.setShutdownState();
+            }
+
+            getModelState() {
+                return {
+                    red: this.redLightState,
+                    yellow: this.yellowLightState,
+                    green: this.greenLightState
+                };
+            }
+
+            setShutdownState() {
+                this.redLightState = false;
+                this.yellowLightState = false;
+                this.greenLightState = false;
+                this.dispatchEvent(new CustomEvent('changed'));
+            }
+
+            setRedToGreenTransitionState() {
+                this.redLightState = true;
+                this.yellowLightState = true;
+                this.greenLightState = false;
+                this.dispatchEvent(new CustomEvent('changed'));
+            }
+
+            setGreenLightState() {
+                this.redLightState = false;
+                this.yellowLightState = false;
+                this.greenLightState = true;
+                this.dispatchEvent(new CustomEvent('changed'));
+            }
+
+            setRedLightState() {
+                this.redLightState = true;
+                this.yellowLightState = false;
+                this.greenLightState = false;
+                this.dispatchEvent(new CustomEvent('changed'));
+            }
+
+            setGreenToRedTransitionState() {
+                this.redLightState = false;
+                this.yellowLightState = true;
+                this.greenLightState = true;
+                this.dispatchEvent(new CustomEvent('changed'));
+            }
+
+            onTickEventHandler(event) {
+                this.timer++;
+
+                if (this.timer >= 0 && this.timer < this.redTime) {
+                    this.setRedLightState();
+                } else if (this.timer < this.redTime + this.transitionTime) {
+                    this.setRedToGreenTransitionState();
+                } else if (this.timer < this.redTime + this.transitionTime + this.greenTime) {
+                    this.setGreenLightState();
+                } else if (this.timer < this.redTime + 2 * this.transitionTime + this.greenTime) {
+                    this.setGreenToRedTransitionState();
+                } else {
+                    this.timer = 0;
+                }
+
+                console.log(this.timer);
+            }
+
+            run() {
+                if (!this.isRunning) {
+                    this.worker = new Worker("timer.js");
+                    this.worker.addEventListener('message', this.onTickEventHandler.bind(this));
+                    this.isRunning = true;
+                } else {
+                    console.log('Semaphore is already running...');
+                }
+            }
+
+            shutdown() {
+                if (this.isRunning) {
+                    this.worker.removeEventListener('message', this.onTickEventHandler);
+                    this.worker.terminate();
+                    this.setShutdownState();
+                    this.isRunning = false;
+                }
+            }
+        }
+
+        function main() {
+            semaphore = new SemaphoreModel();
+            new SemaphoreView(semaphore);
+
+            document.getElementById('on').onclick = () => semaphore.run();
+            document.getElementById('off').onclick = () => semaphore.shutdown();
+            animation();
+        }
+
+        window.onload = main;
+    </script>
+</body>
+</html>
