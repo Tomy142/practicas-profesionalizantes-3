@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Auto Canvas</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 99vh;
+            border: 4px solid red;
+            background-color: rgb(46, 46, 46);
+        }
+    </style>
+</head>
+<body>
+<script>
+    class Rectangle {
+        constructor(x, y, w, h, image) {
+            this.x = x;
+            this.y = y;
+            this.width = w;
+            this.height = h;
+            this.angle = 0;
+            this.speed = 10;
+            this.rotationSpeed = Math.PI / 90;
+            this.image = image;
+        }
+
+        draw(ctx) {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.angle);
+            if (this.image) {
+                ctx.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height);
+            } else {
+                ctx.fillStyle = 'blue';
+                ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
+            }
+            ctx.restore();
+        }
+
+        moveForward() {
+            this.x += Math.cos(this.angle) * this.speed;
+            this.y += Math.sin(this.angle) * this.speed;
+        }
+
+        moveBackward() {
+            this.x -= Math.cos(this.angle) * this.speed;
+            this.y -= Math.sin(this.angle) * this.speed;
+        }
+
+        rotateLeft() {
+            this.angle -= this.rotationSpeed;
+        }
+
+        rotateRight() {
+            this.angle += this.rotationSpeed;
+        }
+    }
+
+    class RectangleController {
+        constructor(rectangle) {
+            this.rectangle = rectangle;
+            this._KEY_CODE = {
+                LEFT: 37,
+                UP: 38,
+                RIGHT: 39,
+                DOWN: 40
+            };
+
+            document.addEventListener('keydown', this.keyDownHandler.bind(this));
+        }
+
+        keyDownHandler(event) {
+            switch (event.keyCode) {
+                case this._KEY_CODE.UP:
+                    this.rectangle.moveForward();
+                    break;
+                case this._KEY_CODE.DOWN:
+                    this.rectangle.moveBackward();
+                    break;
+                case this._KEY_CODE.LEFT:
+                    this.rectangle.rotateLeft();
+                    break;
+                case this._KEY_CODE.RIGHT:
+                    this.rectangle.rotateRight();
+                    break;
+            }
+        }
+    }
+
+    class GameEngineRenderer {
+        constructor(canvasInstance) {
+            this.canvas = canvasInstance;
+            this.ctx = this.canvas.getContext('2d');
+            this.objects = new Map();
+        }
+
+        addObject(id, object) {
+            this.objects.set(id, object);
+        }
+
+        render() {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            for (const item of this.objects.values()) {
+                item.draw(this.ctx);
+            }
+        }
+    }
+
+    function main() {
+        var canvas = document.createElement('canvas');
+        canvas.width = 1910;
+        canvas.height = 905;
+        document.body.appendChild(canvas);
+
+        var image = new Image();
+        image.src = 'agera.png'; 
+
+        image.onload = function () {
+            var renderer = new GameEngineRenderer(canvas);
+            var auto = new Rectangle(250, 250, 150, 125, image);
+            var controller = new RectangleController(auto);
+            renderer.addObject("auto", auto);
+
+            setInterval(function () {
+                renderer.render();
+            }, 16); 
+        };
+    }
+
+    window.onload = main;
+</script>
+</body>
+</html>
