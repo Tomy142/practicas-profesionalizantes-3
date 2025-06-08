@@ -26,12 +26,12 @@ class Canvas extends HTMLElement
         
     }
 
-    getContext2D(){
-        return this.canvas.getContext('2d');
+    getDrawingContext2D(){
+        return this.canvas.getDrawingContext('2d');
     }
 
     clear(){
-        const ctx = this.getContext2D();
+        const ctx = this.getDrawingContext2D();
         ctx.clearRect(0,0,this.canvas.width, this.canvas.height);
     }
 

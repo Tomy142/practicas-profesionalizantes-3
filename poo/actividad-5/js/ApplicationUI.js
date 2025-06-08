@@ -14,12 +14,12 @@ class ApplicationUI extends HTMLElement
         const style = document.createElement('style');
         style.textContent = `
             :host {
-            background-color: rgb(45,45,45);
-            align-items: center;
-            justify-content: center;
-            display: flex;
-            height: 100vh;
-            font-family: Arial, sans-serif;
+                background-color: rgb(45,45,45);
+                align-items: center;
+                justify-content: center;
+                display: flex;
+                height: 100vh;
+                font-family: Arial, sans-serif;
             }
         `;
 
@@ -27,8 +27,6 @@ class ApplicationUI extends HTMLElement
         this.sidebar = new Sidebar();
         this.canvas = new Canvas();
         this.table = new Table();
-
-        this.ctx = this.canvas.getContext2D();
 
         // ==== Assemble ====
         this.container.appendChild(this.sidebar);
@@ -43,9 +41,8 @@ class ApplicationUI extends HTMLElement
         shadow.appendChild(this.container);
 
         this.colorInput = this.sidebar.colorInput;
+        this.tableElement = this.table;
 
-        this.tableElement = document.querySelector('table-wc');
-        
         //-------------------------------Event management-------
         this.btnRect.onclick = () =>
         {
@@ -67,6 +64,13 @@ class ApplicationUI extends HTMLElement
 
     }
 
+    connectedCallback(){
+        this.ctx = this.canvas.getContext2D();
+        if(!this.ctx){
+            console.error('No se pudo obtener el contexto 2D');
+        }
+    }
+
     static getDispatchedEvents()
     {
         return ['createRectangleRequest', 'createCircleRequest','createTriangleRequest'];
@@ -74,25 +78,27 @@ class ApplicationUI extends HTMLElement
 
     getDrawingContext2D()
     {
-        return this.canvas.getContext("2d");
+        return this.canvas.getDrawingContext('2d');
     }
 
     getTableElement(){
         return  this.tableElement;
     }
+
+    clearCanvas(){
+        this.canvas.clear();
+    }
+
     getFormData()
     {
-        let dataObject =
-        {
+        return{
             color: this.colorInput.value,
-            selectedFigure: null
-        };
-
-        return dataObject;
+            selectedFigure: null,
+        };  
     }
 
     render(objects) {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.clearRect(0, 0, this.canvas.canvas.width, this.canvas.canvas.height);
         for (const item of objects.values()) {
             item.draw(this.ctx);
         }

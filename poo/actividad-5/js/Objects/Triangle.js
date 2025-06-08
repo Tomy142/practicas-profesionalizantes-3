@@ -1,10 +1,11 @@
 import { Figure } from "./Figure.js";
 
 class TriangleModel extends Figure{
-    constructor(x,y, size, color)
+    constructor(x,y, base,height, color)
     {
         super(x,y, color);
-        this._size = size;
+        this._base = base;
+        this._height = height;
     }
 
     draw(ctx)
@@ -12,7 +13,7 @@ class TriangleModel extends Figure{
         const h = this._size * Math.sqrt(3) / 2;
         
         ctx.save();
-        ctx.tranlate(this._x, this._y);
+        ctx.translate(this._x, this._y);
         ctx.rotate(this._angle);
         ctx.beginPath();
         ctx.moveTo(0, -h /2) // vertice superior

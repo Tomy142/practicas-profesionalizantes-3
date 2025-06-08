@@ -7,16 +7,16 @@ class RectangleModel extends Figure
         super(x,y,color);
         this._width = w;
         this._height = h;
-        this.angle = 0;
-        this.color = color;
+        this._angle = 0;
+        this._color = color;
     }
 
     draw(ctx)
     {
         ctx.save();
         ctx.translate(this.x, this.y);
-        ctx.rotate(this.angle);
-        ctx.fillStyle = this.color;
+        ctx.rotate(this._angle);
+        ctx.fillStyle = this._color;
         ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
         ctx.restore();
     }
