@@ -1,0 +1,149 @@
+3. Tabla de figuras
+Cada fila representa una figura con:
+
+ID
+
+Tipo (Rectángulo, Círculo, etc)
+
+Un radio button para seleccionar.
+
+Debe exponer un método para:
+
+Agregar fila nueva
+
+Obtener ID de figura seleccionada
+
+Cuando el usuario selecciona una fila, se dispara un evento para que el controlador sepa qué figura está activa.
+
+4. Modelo
+Mantener las figuras en un Map<string, Figure>.
+
+Método para agregar figura.
+
+Método para obtener figura por ID.
+
+Método para obtener iterador de todas las figuras.
+
+Disparar evento modelchanged al modificar el conjunto de figuras.
+
+5. Controlador
+Manejar eventos:
+
+Click en botón crear figura: pide datos, crea figura, la agrega al modelo.
+
+Cambio en la selección de figura en la tabla: marca figura activa.
+
+Eventos de teclado para mover la figura activa.
+
+Cuando el modelo cambia, limpiar el canvas y dibujar todas las figuras actuales.
+
+Cuando la figura seleccionada cambia, actualizar el foco para el movimiento.
+
+6. Dibujo en Canvas
+Cada vez que se dibuja:
+
+Limpiar el canvas.
+
+Iterar todas las figuras y llamar a draw(ctx).
+
+Las figuras deben tener métodos para:
+
+Dibujar.
+
+Modificar posición.
+
+7. Comunicación entre componentes
+La ApplicationUI debe exponer eventos personalizados para:
+
+Crear figura.
+
+Cambiar figura seleccionada.
+
+El controlador debe escuchar esos eventos para actuar sobre el modelo.
+
+La tabla debe exponer un evento de cambio de selección para notificar la figura activa.
+
+8. Manejo de entrada de usuario (teclado)
+Cuando una figura está seleccionada:
+
+Capturar eventos de teclado (flechas, WASD, etc).
+
+Actualizar posición de la figura en el modelo.
+
+Emitir evento modelchanged para redibujar.
+
+9. Estructura recomendada para ApplicationUI
+js
+Copy
+Edit
+class ApplicationUI extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'closed' });
+        this.container = new Container();
+        this.sidebar = new Sidebar();
+        this.canvas = new Canvas();
+        this.table = new Table();
+
+        this.container.append(this.sidebar, this.canvas, this.table);
+        this.shadowRoot.appendChild(this.container);
+
+        // Enlazar eventos
+        this.sidebar.rectButton.onclick = () => this.dispatchEvent(new CustomEvent('createRectangleRequest'));
+        this.sidebar.circleButton.onclick = () => this.dispatchEvent(new CustomEvent('createCircleRequest'));
+        this.table.addEventListener('selectionChanged', e => {
+            this.dispatchEvent(new CustomEvent('figureSelected', { detail: e.detail }));
+        });
+    }
+
+    getDrawingContext2D() {
+        return this.canvas.getContext2D();
+    }
+
+    getFormData() {
+        return {
+            color: this.sidebar.colorPicker.value,
+            // otros datos que necesites
+        };
+    }
+
+    addRowToTable(figure) {
+        this.table.addRow(figure);
+    }
+
+    clearAndRender(objects) {
+        const ctx = this.getDrawingContext2D();
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        for (const fig of objects.values()) {
+            fig.draw(ctx);
+        }
+    }
+}
+10. Flujo recomendado para crear una figura
+Usuario clickea botón "Crear rectángulo" (evento en sidebar).
+
+ApplicationUI despacha evento createRectangleRequest.
+
+Controller escucha evento, pide datos (prompt o form).
+
+Controller crea instancia de figura y la agrega al modelo.
+
+Modelo dispara modelchanged.
+
+Controller responde a modelchanged, pide las figuras al modelo y:
+
+Llama a ApplicationUI.clearAndRender(figures).
+
+Llama a ApplicationUI.addRowToTable(figure) para agregar fila en tabla.
+
+Tabla muestra todas las figuras con radio buttons.
+
+Usuario selecciona una fila (dispara evento de selección).
+
+Controller captura selección, actualiza figura activa.
+
+Eventos de teclado mueven figura activa.
+
+Modelo actualiza figura y dispara modelchanged.
+
+Canvas redibuja todas las figuras con la posición actualizada.

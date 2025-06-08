@@ -2,24 +2,23 @@ import { Figure } from "./Figure.js";
 
 class RectangleModel extends Figure
 {
-    constructor(x, y, width, height, color) 
+    constructor(x,y,w,h,color)
     {
-        super(x, y, color)
-
-        this._width = width;
-        this._height = height;
-
+        super(x,y,color);
+        this._width = w;
+        this._height = h;
+        this.angle = 0;
+        this.color = color;
     }
 
-    draw(ctx) 
+    draw(ctx)
     {
         ctx.save();
-        ctx.translate(this._x, this._y);
-        ctx.rotate(this._angle);
-        ctx.fillStyle = this._color;
-        ctx.fillRect(-this._width / 2, -this._height / 2, this._width, this._height);
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
         ctx.restore();
     }
 }
-
 export{RectangleModel};
