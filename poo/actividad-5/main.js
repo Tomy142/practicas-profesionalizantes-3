@@ -1,4 +1,6 @@
 import{ApplicationUI}from "./js/ApplicationUI.js";
+import{ApplicationModel}from "./js/ApplicationModel.js";
+import{ApplicationController}from "./js/ApplicationController.js";
 function main()
 {
     let model = new ApplicationModel();

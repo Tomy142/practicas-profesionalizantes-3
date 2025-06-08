@@ -18,10 +18,16 @@ class Container extends HTMLElement
             }
         `;
 
-        const container = document.createElement('div');
-        container.className = 'container';
+        this.containerDiv= document.createElement('div');
+        this.containerDiv.className = 'container';
+
         shadow.appendChild(style);
-        shadow.appendChild(container);
+        shadow.appendChild(this.containerDiv);
+    }
+
+    appendChild(child)
+    {
+        this.containerDiv.appendChild(child);
     }
 }
 

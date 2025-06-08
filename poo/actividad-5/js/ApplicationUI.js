@@ -1,14 +1,14 @@
-import{Container}from".Components/Container.js";
-import{Table}from".Components/Table.js";
-import{Sidebar}from".Components/Side-bar.js";
-import{Canvas}from".Components/Canvas.js";
+import{Container}from"./Components/Container.js";
+import{Table}from"./Components/Table.js";
+import{Sidebar}from"./Components/Side-bar.js";
+import{Canvas}from"./Components/Canvas.js";
 
 class ApplicationUI extends HTMLElement 
 {
     constructor() 
     {
         super();                                                // llama al constructor de HTMLElement
-        const shadow = this.attachShadow({ mode: 'closed' });   // crea un shadowDOM cerrado, para encapsular
+        const shadow = this.attachShadow({ mode: 'open' });   // crea un shadowDOM cerrado, para encapsular
 
         // ==== Styles ====
         const style = document.createElement('style');
@@ -25,7 +25,7 @@ class ApplicationUI extends HTMLElement
 
         this.container = new Container();
         this.sidebar = new Sidebar();
-        this.canvas = new Canvas();
+        this.canvas = document.createElement('canvas-wc');
         this.table = new Table();
 
         // ==== Assemble ====
@@ -62,13 +62,22 @@ class ApplicationUI extends HTMLElement
             this.dispatchEvent( new CustomEvent('createTriangleRequest') );
         }
 
+        this.table.addEventListener('figureSelectionChanged',(event)=>{
+            this.dispatchEvent(new CustomEvent('figureSelectionChanged',{
+                detail: event.detail,
+                bubbles: true,
+                composed: true,
+            }));
+        });
     }
 
     connectedCallback(){
-        this.ctx = this.canvas.getContext2D();
-        if(!this.ctx){
+        requestAnimationFrame(()=>{
+            this.ctx = this.canvas.getContext2D('2d');
+            if(!this.ctx){
             console.error('No se pudo obtener el contexto 2D');
         }
+        });
     }
 
     static getDispatchedEvents()
@@ -78,7 +87,7 @@ class ApplicationUI extends HTMLElement
 
     getDrawingContext2D()
     {
-        return this.canvas.getDrawingContext('2d');
+        return this.canvas.getContext2D();
     }
 
     getTableElement(){
@@ -98,7 +107,8 @@ class ApplicationUI extends HTMLElement
     }
 
     render(objects) {
-        this.ctx.clearRect(0, 0, this.canvas.canvas.width, this.canvas.canvas.height);
+        const ctx = this.getDrawingContext2D();
+        this.ctx.clearRect(0, 0, this.canvas.canvas.width, this.canvas.canvas.height); //se puede solucionar con getters
         for (const item of objects.values()) {
             item.draw(this.ctx);
         }

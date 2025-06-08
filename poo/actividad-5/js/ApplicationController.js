@@ -93,8 +93,7 @@ class ApplicationController
     {
         //Datos pedidos al usuario
         let id = parseInt(prompt('Ingrese ID:'));
-        let base = parseInt(prompt('Ingrese base:'));
-        let height = parseInt(prompt('Ingrese alto:'));
+        let size = parseInt(prompt('Ingrese el tamaño del lado:'));
         let x = parseInt(prompt('Ingrese x:'));
         let y = parseInt(prompt('Ingrese y:'));
 
@@ -102,7 +101,7 @@ class ApplicationController
         let color = this.view.getFormData().color;
 
         //Acceso al modelo
-        let new_figure = new TriangleModel(x,y,base,height,color)
+        let new_figure = new TriangleModel(x,y,size,color)
         this.model.addObject(id, new_figure);
 
         this.view.getTableElement().addRow(id,'Triangulo');
@@ -112,7 +111,7 @@ class ApplicationController
     onKeyDown(event){
         if(!this.selectedFigureId) return;
 
-        const figure = this.model.getObject(this.selectedFigureId);
+        const figure = this.model.getObject(parseInt(this.selectedFigureId));
         if(!figure)return;
         
 

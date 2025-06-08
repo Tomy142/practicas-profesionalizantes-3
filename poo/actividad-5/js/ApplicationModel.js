@@ -26,3 +26,5 @@ class ApplicationModel extends EventTarget
         return this.objects.values();
     }
 }
+
+export{ApplicationModel};

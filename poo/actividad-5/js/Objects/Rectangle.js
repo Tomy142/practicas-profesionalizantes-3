@@ -14,10 +14,10 @@ class RectangleModel extends Figure
     draw(ctx)
     {
         ctx.save();
-        ctx.translate(this.x, this.y);
+        ctx.translate(this._x, this._y);
         ctx.rotate(this._angle);
         ctx.fillStyle = this._color;
-        ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
+        ctx.fillRect(-this._width / 2, -this._height / 2, this._width, this._height);
         ctx.restore();
     }
 }
