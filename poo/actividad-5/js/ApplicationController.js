@@ -11,10 +11,10 @@ class ApplicationController
         this.ctx = this.view.getDrawingContext2D();
         this.selectedFigureId = null;
         this._KEY_CODE = {
-            LEFT: 37,
-            UP: 38,
-            RIGHT: 39,
-            DOWN:40
+            W: 87,
+            A: 65,
+            S: 83,
+            D: 68
         }
     }
 
@@ -116,16 +116,16 @@ class ApplicationController
         
 
         switch(event.keyCode){
-            case this._KEY_CODE.UP:
+            case this._KEY_CODE.W:
                 figure.move(10);
                 break;
-            case this._KEY_CODE.DOWN:
+            case this._KEY_CODE.S:
                 figure.move(-10);
                 break;
-            case this._KEY_CODE.LEFT:
+            case this._KEY_CODE.A:
                 figure.rotate(-0.1);
                 break;
-            case this._KEY_CODE.RIGHT:
+            case this._KEY_CODE.D:
                 figure.rotate(0.1);
                 break;
         }
