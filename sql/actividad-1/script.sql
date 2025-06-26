@@ -6,7 +6,7 @@ CREATE DATABASE IF NOT EXISTS data_country
 USE data_country; 
 /*---Crear Tabla---*/
 CREATE TABLE country(  
-    country INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
     capital_city VARCHAR(50) NOT NULL UNIQUE,
     language VARCHAR(50) NOT NULL,
