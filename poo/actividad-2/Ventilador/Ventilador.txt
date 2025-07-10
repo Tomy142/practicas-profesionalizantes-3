@@ -1,4 +1,4 @@
-Objeto:  ImpresoraA
+Objeto:  Ventilador
 
 Propiedades/atributos:
 
