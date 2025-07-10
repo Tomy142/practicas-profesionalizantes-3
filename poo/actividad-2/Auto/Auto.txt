@@ -1,0 +1,33 @@
+Objeto:  Auto
+
+Propiedades/atributos:
+
+Nombre          |   Tipo de dato            | Cte/Variable          | Rango de variables posibles          | f(c) 
+is_engine_on        bool                        Variable                   true/false
+wheel_direction     bool                        variable                   true/false
+fuel_in_lt          double                      variable                   0 a 55    
+gas_pedal           bool                        variable                   true/false
+brake_pedal         bool                        variable                   true/false
+clutch_pedal        bool                        variable                   true/false
+hand_brake          bool                        variable                   true/false
+shift               int                         variable                   -1 a 6
+speed_in_km         double                      variable                   0 a 250
+
+
+
+Comportamiento:
+
+Nombre          |   Parametro/Tipo          |   Retorno/Tipo
+    
+TurnOn()
+TurnOff()
+TurnDirection()
+GetFuel()
+SetFuel()
+GasPedalPress()
+BrakePedalPress()
+HandBrakePedalPress()
+GetShift()
+SetShift()
+GetSpeed()
+SetSpeed()

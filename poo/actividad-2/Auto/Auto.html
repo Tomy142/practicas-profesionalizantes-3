@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Printer-Context-A</title>
+</head>
+<body>
+    
+</body>
+
+<script>
+    class Auto {
+    constructor() {
+        
+        this.is_engine_on = false;
+        this.wheel_direction = true; 
+        this.fuel_in_lt = 0;
+        this.gas_pedal = false;
+        this.brake_pedal = false;
+        this.clutch_pedal = false;
+        this.hand_brake = true; 
+        this.shift = 0; 
+        this.speed_in_km = 0;
+    }
+
+    
+
+    TurnOn() {
+        if (this.fuel_in_lt > 0 && !this.is_engine_on) {
+            this.is_engine_on = true;
+            this.hand_brake = true; 
+            return "Motor encendido";
+        } else if (this.is_engine_on) {
+            return "El motor ya está encendido";
+        } else {
+            return "No hay combustible para encender el motor";
+        }
+    }
+
+    TurnOff() {
+        if (this.is_engine_on) {
+            this.is_engine_on = false;
+            this.gas_pedal = false;
+            this.brake_pedal = true; 
+            return "Motor apagado";
+        }
+        return "El motor ya está apagado";
+    }
+
+    TurnDirection(direction) {
+        if (this.speed_in_km < 30) { 
+            this.wheel_direction = direction;
+            return `Dirección girada a ${direction ? "derecha" : "izquierda"}`;
+        }
+        return "No se puede cambiar dirección a alta velocidad";
+    }
+
+    GetFuel() {
+        return this.fuel_in_lt;
+    }
+
+    AddFuel(liters) {
+        if (liters > 0) {
+            const newTotal = this.fuel_in_lt + liters;
+            this.fuel_in_lt = Math.min(newTotal, 55); 
+            return `Combustible añadido. Total: ${this.fuel_in_lt} litros`;
+        }
+        return "Cantidad de combustible inválida";
+    }
+
+    GasPedalPress(pressed) {
+        if (this.is_engine_on && !this.brake_pedal && !this.hand_brake) {
+            this.gas_pedal = pressed;
+            if (pressed) {
+                this.speed_in_km = Math.min(this.speed_in_km + 5, 250); 
+            } else {
+                this.speed_in_km = Math.max(this.speed_in_km - 2, 0); 
+            }
+            return `Acelerador ${pressed ? "presionado" : "liberado"}`;
+        }
+        return "No se puede acelerar en estas condiciones";
+    }
+
+    BrakePedalPress(pressed) {
+        this.brake_pedal = pressed;
+        if (pressed) {
+            this.speed_in_km = Math.max(this.speed_in_km - 10, 0); 
+        }
+        return `Freno ${pressed ? "presionado" : "liberado"}`;
+    }
+
+    HandBrakePedalPress(pressed) {
+        this.hand_brake = pressed;
+        if (pressed) {
+            this.speed_in_km = 0; 
+        }
+        return `Freno de mano ${pressed ? "activado" : "desactivado"}`;
+    }
+
+    ClutchPedalPress(pressed) {
+        this.clutch_pedal = pressed;
+        return `Embrague ${pressed ? "presionado" : "liberado"}`;
+    }
+
+    GetShift() {
+        return this.shift;
+    }
+
+    GetSpeed() {
+        return this.speed_in_km;
+    }
+}
+
+</script>
+</html>
