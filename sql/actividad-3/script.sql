@@ -20,17 +20,30 @@ CREATE TABLE group(
     description VARCHAR(128) 
 )
 
-/*---Crear Tabla Action---*/
+/*---Precarga de grupos---*/
+INSERT INTO group( name, description) VALUES
+    ('administrator', 'Poseen acceso a toda la WebAPI'),
+    ('regular', ' Pueden likear, comentar, subir, consultar videos de usuarios'),
+    ('moderator', 'Pueden suspender usuarios por infringir copyright');
 
+/*---Crear Tabla Action---*/
 CREATE TABLE action(
     id_group INT UNSIGNED AUTO_INCREMENT PRIMARY KEY UNIQUE NOT NULL,
     name VARCHAR(45) UNIQUE NOT NULL,
     description VARCHAR(128),
 )
 
-/*---Crear Tabla Web-Api ---*/
+/*---Precarga de grupos---*/
+INSERT INTO action( name, description) VALUES
+    ('uploadVideo', 'Sube un nuevo video'),
+    ('getUserVideos', 'Obtiene los videos de un usuario'),
+    ('likeVideo', 'Marca un video como "me gusta"'),
+    ('commentOnVideo', 'Agrega un comentario a un video'),
+    ('deleteVideo', 'Elimina un video (por ID)'),
+    ('suspendUser', 'Suspende usuario (por ID)');
 
-CREATE TABLE action(
+/*---Crear Tabla Web-Api ---*/
+CREATE TABLE webapi(
     id_group INT UNSIGNED AUTO_INCREMENT PRIMARY KEY UNIQUE NOT NULL,
     url VARCHAR(256) UNIQUE NOT NULL,
     http_method VARCHAR(45)
