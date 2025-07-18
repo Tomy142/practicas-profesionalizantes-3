@@ -7,28 +7,28 @@ USE group_user;
 /*---Crear Tabla User---*/
 
 CREATE TABLE user(
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(45) UNIQUE NOT NULL,
     password VARCHAR(128) NOT NULL
 );
 
 /*----Crear Tabla Group---*/
 
-CREATE TABLE group(
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
+CREATE TABLE groups(
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(45) UNIQUE NOT NULL,
     description VARCHAR(128) 
 );
 
 /*---Precarga de grupos---*/
-INSERT INTO group( name, description) VALUES
+INSERT INTO groups( name, description) VALUES
     ('administrator', 'Poseen acceso a toda la WebAPI'),
     ('regular', ' Pueden likear, comentar, subir, consultar videos de usuarios'),
     ('moderator', 'Pueden suspender usuarios por infringir copyright');
 
 /*---Crear Tabla Action---*/
 CREATE TABLE action(
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(45) UNIQUE NOT NULL,
     description VARCHAR(128)
 );
@@ -44,7 +44,7 @@ INSERT INTO action( name, description) VALUES
 
 /*---Crear Tabla Web-Api ---*/
 CREATE TABLE web_api(
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     id_action INT UNSIGNED NOT NULL,
     url VARCHAR(256) UNIQUE NOT NULL,
     http_method VARCHAR(10) NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE web_api(
 );
 
 /*---Precarga de web_api ---*/
-INSERT INTO action( id_action, url, http_method) VALUES
+INSERT INTO web_api( id_action, url, http_method) VALUES
     (1,'/api/uploadVideo', 'POST'),
     (2,'/api/getUserVideos', 'POST'),
     (3,'/api/likeVideo', 'POST'),
@@ -68,33 +68,36 @@ INSERT INTO action( id_action, url, http_method) VALUES
 CREATE TABLE user_groups(
     id_user INT UNSIGNED NOT NULL,
     id_group INT UNSIGNED NOT NULL,
-    PRIMARY KEY(id_user, id_group)
+    PRIMARY KEY(id_user, id_group),
     CONSTRAINT fk_user_groups_user
-        FOREIGN KEY(id_user) REFERENCES user(id)
+        FOREIGN KEY(id_group) REFERENCES groups(id)
         ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 
-/*--- Crear tabla intermedia user_group---*/
+/*--- Crear tabla intermedia group_permissions--*/
 
 CREATE TABLE group_permissions(
     id_group INT UNSIGNED NOT NULL,
     id_action INT UNSIGNED NOT NULL,
     PRIMARY KEY (id_group, id_action),
     CONSTRAINT fk_group_permissions_group
-        FOREIGN KEY (id_action) REFERENCES group(id)
+        FOREIGN KEY (id_group) REFERENCES groups(id)
+        ON DELETE RESTRICT ON UPDATE RESTRICT
+    CONSTRAINT fk_group_permissions_action
+        FOREIGN KEY (id_action) REFERENCES action(id)
         ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 
 /*--- Procedimientos almacenados del ABM Usuario ---*/
 /*---Obtener usuario por ID---*/
-DELIMTER //
+DELIMITER //
 CREATE PROCEDURE user_obtain_by_id(
     IN p_id INT UNSIGNED
 )
 BEGIN
     SELECT id, name FROM user WHERE id = p_id;
 END //
-DELIMTER;
+DELIMITER;
 
 /*---Obtener Usuario por nombre---*/
 
@@ -151,7 +154,7 @@ CREATE PROCEDURE group_obtain_by_id(
     IN p_id INT UNSIGNED
 )
 BEGIN
-    SELECT * FROM group WHERE id = p_id;
+    SELECT * FROM groups WHERE id = p_id;
 END //
 DELIMITER ;
 
@@ -161,7 +164,7 @@ CREATE PROCEDURE group_obtain_by_name(
     IN p_name VARCHAR(45)
 )
 BEGIN
-    SELECT * FROM group WHERE name = p_name;
+    SELECT * FROM groups WHERE name = p_name;
 END //
 DELIMITER ;
 
@@ -173,7 +176,7 @@ CREATE PROCEDURE group_insert(
     IN p_description VARCHAR(128)
 )
 BEGIN
-    INSERT INTO group(name, description) VALUES(p_name, p_description);
+    INSERT INTO groups(name, description) VALUES(p_name, p_description);
 END //
 DELIMITER ;
 
@@ -185,7 +188,7 @@ CREATE PROCEDURE group_update(
     IN p_description VARCHAR(128)
 )
 BEGIN
-    UPDATE group SET name = p_name, description = p_description WHERE id = p_id;
+    UPDATE groups SET name = p_name, description = p_description WHERE id = p_id;
 END //
 DELIMITER ;
 
@@ -195,7 +198,7 @@ CREATE PROCEDURE group_delete(
     IN p_id INT UNSIGNED
 )
 BEGIN
-    DELETE FROM group WHERE id= p_id;
+    DELETE FROM groups WHERE id= p_id;
 END //
 DELIMITER ;
 
@@ -207,7 +210,7 @@ CREATE PROCEDURE action_obtain_by_id(
     IN p_id INT UNSIGNED
 )
 BEGIN
-    SELECT * FROM action WHERE id = p_id
+    SELECT * FROM action WHERE id = p_id;
 END //
 DELIMITER ;
 
@@ -268,12 +271,12 @@ BEGIN
     JOIN action a ON wa.id_action = a.id
     WHERE wa.id = p_id;
 END //
-DELIMTER ;
+DELIMITER ;
 
 /*--- Obtener Web-api por URL ---*/
 DELIMITER //
 CREATE PROCEDURE web_api_obtain_by_url(
-    IN p_id INT UNSIGNED
+    IN p_url VARCHAR(256)
 )
 BEGIN
     SELECT wa.*, a.name AS action_name
@@ -345,13 +348,13 @@ DELIMITER ;
 /*--- Obtener grupos de un usuario ---*/
 DELIMITER //
 CREATE PROCEDURE user_get_groups(
-    IN p_id_group INT UNSIGNED
+    IN p_id_user INT UNSIGNED
 )
 BEGIN
-    SELECT u.id, u.name
-    FROM user u
-    JOIN user_groups ug ON u.id = ug.id_user
-    WHERE ug.id_group = p_id_group;
+    SELECT g.id, g.name, g.description
+    FROM groups g
+    JOIN user_groups ug ON u.id = ug.id_group
+    WHERE ug.id_user = p_id_user;
 END //
 DELIMITER ;
 
@@ -411,7 +414,7 @@ CREATE PROCEDURE action_get_groups(
 )
 BEGIN
     SELECT g.id, g.name, g.description
-    FROM group g
+    FROM groups g
     JOIN group_permissions gp ON g.id = gp.id_group
     WHERE gp.id_action = p_id_action;
 END // 
