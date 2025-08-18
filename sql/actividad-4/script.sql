@@ -37,7 +37,7 @@ CREATE TABLE folder_folders(
 CREATE TABLE folder_files(
     id_folder INT NOT NULL,
     id_file INT NOT NULL,
-    PRIMARY KEY (id_folder, id_folder),
+    PRIMARY KEY (id_folder, id_file),
     FOREIGN KEY (id_folder) REFERENCES folder(id_folder),
     FOREIGN KEY (id_file) REFERENCES file(id_file)
 ) DEFAULT CHARACTER SET utf8
